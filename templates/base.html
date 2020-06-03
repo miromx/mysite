@@ -1,0 +1,102 @@
+{% load static %}
+<!doctype html>
+<!--suppress SyntaxError -->
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>{% block title%} Новости со всего мира {% endblock %}</title>
+</head>
+<body>
+
+{% include 'inc/_nav.html' %}
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-3">
+
+        {% block sidebar %}  {% endblock %}
+        </div>
+        <div class="col-md-9">
+
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-{{ message.tags }}" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}  {% endblock %}
+            {% if page_obj.has_other_pages %}
+            <nav aria-label="...">
+                <ul class="pagination justify-content-center">
+
+                    {% if page_obj.has_previous %}
+                    <li class="page-item ">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    {% for p in page_obj.paginator.page_range %}
+                        {% if page_obj.number == p %}
+                        <li class="page-item active" aria-current="page">
+                            <a class="page-link" href="?page={{ p }}">{{ p }} <span class="sr-only">(current)</span></a>
+                        </li>
+                        {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:3  %}
+                        <li class="page-item">
+                        <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                    </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item ">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" >Next</a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+
+
+    </div>
+</div>
+
+<div class="h-25 jumbotron jumbotron-fluid mt-3">
+  <div class="container">
+    <h1 class="display-4">Мы на связи :)</h1>
+    <p class="lead">Следите за нами в соцсетях.</p>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+
+
+
+
+
+</body>
+
+</html>
