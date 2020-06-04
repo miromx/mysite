@@ -67,7 +67,9 @@ def contact(request):
                 messages.success(request, 'Письмо отправлено!')
                 return redirect('contact')
             else:
-                messages.error(request, 'Error send mail!')
+                messages.error(request, 'Ошибка отправки!')
+        else:
+            messages.error(request, 'Ошибка валидации!')
     else:
         form = ContactForm()
     return render(request, 'news/test.html', {'form': form})
